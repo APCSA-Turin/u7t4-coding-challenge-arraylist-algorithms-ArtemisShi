@@ -103,6 +103,7 @@ public class Main{
             if(sentence.substring(i, i+1).equals(" ")){
                 bob.add(sentence.substring(0,i));
                 sentence=sentence.substring(i+1);
+                i=0;
             }
         }
         bob.add(sentence);
@@ -188,7 +189,7 @@ public class Main{
     // swapEnds([8, 6, 7, 9, 5]) → [5, 6, 7, 9, 8]
     // swapEnds([]->[])
     public static ArrayList<Integer> swapEnds(ArrayList<Integer> list){        
-        if(list.size()==1){
+        if(list.size()==1||list.size()==0){
             return list;
         }
         list.add(list.get(0));
@@ -230,14 +231,16 @@ public class Main{
         for(int i=0; i<list.size();i++){
             if(list.get(i).equals(val)){
                 if(i==0){
+                    if(list.get(1+i)>list.get(0)){
                     list.add(0, list.get(1+i));
                     list.remove(1);
-                }
+                }}
                 else{
                 if(i==list.size()-1){
+                    if(list.get(list.size()-2)>list.get(list.size()-1)){
                     list.add(list.get(list.size()-2));
                     list.remove(list.size()-2);
-                }
+                }}
                 else{if(!list.get(i-1).equals(val)&&!list.get(i+1).equals(val)){
                     if(list.get(i-1)>list.get(i+1)){
                         list.add(i,list.get(i-1));
@@ -271,7 +274,7 @@ public class Main{
         }
         list.add(list.get(0));
         for(int i=0; i<size;i++){
-        list.remove(i);
+        list.remove(0);
         }
         return list;
     }
@@ -287,11 +290,46 @@ public class Main{
     // fix34([3, 2, 2, 4]) → [3, 4, 2, 2]
 
     public static ArrayList<Integer> fix34(ArrayList<Integer> list){
-
-        return list;
+        int place=0;
+        ArrayList<Integer> four= new ArrayList<>(); 
+        for(int i=0; i<list.size();i++){
+            if(list.get(i).equals(4)){
+                four.add(i);
+            }
+        }
+        int count=0;
+        for(int i=0; i<list.size();i++){
+            if(list.get(i).equals(4)){
+                list.remove(i);
+                i--;
+            }
+        }
+        
+        for(int i=0; i<list.size()-1;i++){
+            if(list.get(i).equals(3)){
+                place=list.get(i+1);
+        }
     }
 
+        for(int i=0; i<four.size();i++){
+            list.add(four.get(i), place);
+        }
 
+    //     for(int i=0; i<list.size()-1;i++){
+    //         if(list.get(i).equals(3)){
+    //             place=list.get(i+1);
+    //             list.remove(i+1);
+    //             list.add(list.get(four.get(count)),place);
+    //     }
+    // }
+
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).equals(3)){
+                list.set(i+1,4);
+            }
+        }
+        return list;
+    }
 
     /** Returns an arraylist of Integers that contain all mode(s) of the array numList.
    *  The mode of a list is the value that appears the greatest number of times.
@@ -318,6 +356,60 @@ public class Main{
    *  @param numList  numList of ints
    */
     public static ArrayList<Integer> modes(int[] numList){
-        return new ArrayList<Integer>();
+        ArrayList<Integer> mode = new ArrayList<>();
+        mode.add(0);
+        int count=0;
+        int modes=0;
+        int total=0;
+        ArrayList<Integer> counts = new ArrayList<>();
+        
+        for(int num: numList){
+            count=0;
+            for(int i=0; i<numList.length;i++){
+                if(num==numList[i]){
+                    count++;
+                }
+            }
+                    if(!mode.get(0).equals(num)){
+                        if(count>modes){
+                            modes=count;
+                            mode=new ArrayList<>();
+                            mode.add(num);
+                        }
+                        if(count==modes){
+                            mode.add(num);
+                        }
+                        total+=count;
+                        counts.add(count);
+            
+        }}
+    
+    for(int j=0; j<mode.size()-1;j++){
+        if(mode.get(j)>mode.get(j+1)){
+            Integer bo= mode.set(j, mode.get(j+1));
+            mode.set(j+1, bo);
+            j=0;
+        }
+    }
+    for(int i=0; i<mode.size()-1;i++){
+        if(mode.get(i).equals(mode.get(i+1))){
+            mode.remove(i+1);
+            i--;
+        }
+    }
+
+    if(total/numList.length==modes){
+        return new ArrayList<>();
+    }
+    int las=1;
+    for(int i=0; i<counts.size()-1;i++){
+        if(counts.get(i).equals(counts.get(i+1))){
+            las++;
+        }
+        if(las==counts.size()){
+            return new ArrayList<>();
+        }
+    }
+        return mode;
     }
 }
